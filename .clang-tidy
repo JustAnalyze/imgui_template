@@ -1,0 +1,15 @@
+Checks: >
+  bugprone-*,
+  performance-*,
+  readability-*,
+  modernize-*,
+  cppcoreguidelines-*,
+  clang-analyzer-*,
+  portability-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -cppcoreguidelines-owning-memory
+WarningsAsErrors: "*"
+HeaderFilterRegex: ".*"
+AnalyzeTemporaryDtors: true
+FormatStyle: none
