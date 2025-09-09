@@ -18,6 +18,10 @@ find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 
+# #NOTEL DEBUGGING EXECUTABLES
+# add_executable(logic src/logic.cpp)
+# target_include_directories(logic PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 # Main app
 add_executable(imnotator)
 
