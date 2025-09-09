@@ -10,16 +10,14 @@
 struct ImageBrowser
 {
     bool showWindow = true;
-    std::vector<std::string> imagePaths{
-        "demo/Worm_Eating_Warbler_0018_795546.jpg",
-        "demo/Yellow_Warbler_0114_176201.jpg", "demo/Acadian_Flycatcher.jpg"
-    };
+    std::vector<std::string> imagePaths{};
 };
 
-struct ImageWindow
+struct ImageViewer
 {
-    GLuint imageTexture = 0;
-    std::string imagePath = "";
+    std::string imagePath;        // requested image
+    std::string loadedImagePath;  // last successfully loaded image
+    GLuint imageTexture = 0;      // OpenGL texture handle
     int imageWidth = 0;
     int imageHeight = 0;
 };
@@ -33,7 +31,7 @@ struct FileDialogState
 
 struct SettingsState
 {
-    bool showWindow = true;
+    bool showWindow = false;
     float volume = 0.5f;
     bool darkMode = false;
 };
@@ -49,7 +47,7 @@ struct UIState
     FileDialogState fileDialog;
     SettingsState settings;
     DebugState debug;
-    ImageWindow imageWindow;
+    ImageViewer imageViewer;
     ImageBrowser imageBrowser;
 };
 
