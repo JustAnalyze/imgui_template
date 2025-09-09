@@ -54,12 +54,32 @@ void RenderDebug(DebugState& state)
     }
 }
 
-void RenderImageWindow(ImageWindow& state)
+void RenderImageViewer(ImageViewer& state)
 {
-    if (!LoadTextureFromFile(state.imagePath.c_str(), &state.imageTexture,
-                             &state.imageWidth, &state.imageHeight))
+    if (state.imagePath.empty())
+        return;  // nothing to show
+
+    // Load texture only if a new image was selected
+    if (state.imagePath != state.loadedImagePath)
     {
-        std::cerr << "Failed to load texture!" << std::endl;
+        // free old texture if it exists
+        if (state.imageTexture)
+        {
+            glDeleteTextures(1, &state.imageTexture);
+            state.imageTexture = 0;
+        }
+        // try to load new texture
+        if (LoadTextureFromFile(state.imagePath.c_str(), &state.imageTexture,
+                                &state.imageWidth, &state.imageHeight))
+        {
+            state.loadedImagePath = state.imagePath;  // mark as loaded
+        }
+        else
+        {
+            std::cerr << "Failed to load texture: " << state.imagePath
+                      << std::endl;
+            state.loadedImagePath.clear();
+        }
     }
 
     ImGui::Begin("Image Window");
