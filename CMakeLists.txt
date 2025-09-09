@@ -20,7 +20,9 @@ find_package(OpenCV REQUIRED)
 
 # #NOTEL DEBUGGING EXECUTABLES
 # add_executable(logic src/logic.cpp)
-# target_include_directories(logic PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+# target_include_directories(
+#   logic PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
+# )
 
 # Main app
 add_executable(imnotator)
@@ -46,6 +48,10 @@ target_sources(
   imnotator PRIVATE external/imgui/backends/imgui_impl_glfw.cpp
                     external/imgui/backends/imgui_impl_opengl3.cpp)
 
+# nativiefiledialog
+add_subdirectory(external/nativefiledialog)
+target_link_libraries(imnotator PRIVATE nativefiledialog)
+
 # Add glad as a library
 add_library(glad STATIC external/glad/src/glad.c)
 set_target_properties(glad PROPERTIES LINKER_LANGUAGE C)
@@ -60,4 +66,6 @@ target_include_directories(
 )
 
 # Link libs
-target_link_libraries(imnotator PRIVATE glfw OpenGL::GL ${OpenCV_LIBS} glad dl)
+target_link_libraries(imnotator PRIVATE glfw OpenGL::GL ${OpenCV_LIBS} glad
+                                        dl
+                                        nativefiledialog)
