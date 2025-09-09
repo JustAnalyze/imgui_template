@@ -56,22 +56,21 @@ void RenderDebug(DebugState& state)
 
 void RenderImageWindow(ImageWindow& state)
 {
-    if (state.image_texture == 0)
+    if (state.imageTexture == 0)
     {
-        if (!LoadTextureFromFile("Acadian_Flycatcher.jpg",
-                                 &state.image_texture, &state.image_width,
-                                 &state.image_height))
+        if (!LoadTextureFromFile("Acadian_Flycatcher.jpg", &state.imageTexture,
+                                 &state.imageWidth, &state.imageHeight))
         {
             std::cerr << "Failed to load texture!" << std::endl;
         }
     }
 
     ImGui::Begin("Image Example");
-    if (state.image_texture)
+    if (state.imageTexture)
     {
-        ImGui::Image(reinterpret_cast<void*>(
-                         static_cast<intptr_t>(state.image_texture)),
-                     ImVec2(state.image_width, state.image_height));
+        ImGui::Image(
+            reinterpret_cast<void*>(static_cast<intptr_t>(state.imageTexture)),
+            ImVec2(state.imageWidth, state.imageHeight));
     }
     ImGui::End();
 }
@@ -136,7 +135,7 @@ void RenderDockspace(UIState& uiState)
 void RenderImageBrowser()
 {
     ImGui::Begin("Image Browser");
-    std::vector<, typename> if (ImGui::Selectable("example selectable"))
+    if (ImGui::Selectable("example selectable"))
     {
         std::cout << "I AM SELECTED!!!\n";
     }

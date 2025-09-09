@@ -8,9 +8,9 @@
 // Example usage inside your render loop
 struct ImageWindow
 {
-    GLuint image_texture = 0;
-    int image_width = 0;
-    int image_height = 0;
+    GLuint imageTexture = 0;
+    int imageWidth = 0;
+    int imageHeight = 0;
 };
 
 // --- State structs ---
