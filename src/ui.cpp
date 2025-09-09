@@ -167,12 +167,18 @@ void RenderDockspace(UIState& uiState)
     ImGui::End();
 }
 
-void RenderImageBrowser()
+void RenderImageBrowser(ImageBrowser& ImageBrowserState,
+                        ImageViewer& imageWindowState)
 {
-    ImGui::Begin("Image Browser");
-    if (ImGui::Selectable("example selectable"))
+    ImGui::Begin("Image Browser", &ImageBrowserState.showWindow);
+    for (const std::string& filePath : ImageBrowserState.imagePaths)
     {
-        std::cout << "I AM SELECTED!!!\n";
+        std::filesystem::path filePath_fsp(filePath);
+        if (ImGui::Selectable(filePath_fsp.filename().c_str()))
+        {
+            std::cout << "Selected: " << filePath << '\n';
+            imageWindowState.imagePath = filePath;
+        }
     }
     ImGui::End();
 }
