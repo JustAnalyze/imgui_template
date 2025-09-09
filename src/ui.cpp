@@ -113,23 +113,28 @@ std::string OpenDirectoryDialog()
 // Child of Dockspace
 void RenderMainMenu(UIState& uiState)
 {
-    if (ImGui::BeginMainMenuBar())
+    ImGui::BeginMainMenuBar();
+    if (ImGui::BeginMenu("File"))
     {
-        if (ImGui::BeginMenu("File"))
+        if (ImGui::MenuItem("Open Directory"))
         {
-            if (ImGui::MenuItem("Open Directory"))
-                uiState.fileDialog.isOpen = true;
-            ImGui::EndMenu();
+            std::string dir = OpenDirectoryDialog();
+            if (!dir.empty())
+            {
+                uiState.fileDialog.selectedPath = dir;
+                uiState.imageBrowser.imagePaths = getDirFilePaths(dir);
+            }
         }
-        if (ImGui::BeginMenu("View"))
-        {
-            ImGui::MenuItem("Settings", nullptr, &uiState.settings.showWindow);
-            ImGui::MenuItem("Profiler", nullptr, &uiState.debug.showProfiler);
-            ImGui::MenuItem("Logs", nullptr, &uiState.debug.showLogs);
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
+        ImGui::EndMenu();
     }
+    if (ImGui::BeginMenu("View"))
+    {
+        ImGui::MenuItem("Settings", nullptr, &uiState.settings.showWindow);
+        ImGui::MenuItem("Profiler", nullptr, &uiState.debug.showProfiler);
+        ImGui::MenuItem("Logs", nullptr, &uiState.debug.showLogs);
+        ImGui::EndMenu();
+    }
+    ImGui::EndMainMenuBar();
 }
 
 void RenderDockspace(UIState& uiState)
