@@ -1,27 +1,14 @@
 // Copyright 2025 Justin Nacu
 // ui.cpp
 #include <imgui.h>
+#include <nfd.h>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "ui.h"
 #include "logic.h"
 #include "image_loader.h"
-
-void RenderFileDialog(FileDialogState& state)
-{
-    if (!state.isOpen)
-        return;
-
-    ImGui::Begin("File Dialog", &state.isOpen);
-    ImGui::Text("Select a file...");
-    if (ImGui::Button("Choose Example.txt"))
-    {
-        state.selectedPath = "Example.txt";
-        state.isOpen = false;  // close after selection
-    }
-    ImGui::End();
-}
 
 void RenderSettings(SettingsState& state)
 {
@@ -193,8 +180,8 @@ void RenderUI(UIState& uiState)
     RenderDockspace(uiState);
 
     // Render windows based on state
-    RenderImageBrowser(uiState.imageBrowser, uiState.imageWindow);
-    RenderImageWindow(uiState.imageWindow);
+    RenderImageBrowser(uiState.imageBrowser, uiState.imageViewer);
+    RenderImageViewer(uiState.imageViewer);
     RenderSettings(uiState.settings);
     RenderDebug(uiState.debug);
 }
