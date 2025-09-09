@@ -4,8 +4,18 @@
 
 #include <glad/glad.h>
 #include <string>
+#include <vector>
 
 // Example usage inside your render loop
+struct ImageBrowser
+{
+    bool showWindow = true;
+    std::vector<std::string> imagePaths{
+        "demo/Worm_Eating_Warbler_0018_795546.jpg",
+        "demo/Yellow_Warbler_0114_176201.jpg", "demo/Acadian_Flycatcher.jpg"
+    };
+};
+
 struct ImageWindow
 {
     GLuint imageTexture = 0;
