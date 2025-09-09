@@ -1,9 +1,10 @@
 // Copyright 2025 Justin Nacu
-#include <stdexcept>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <glad/glad.h>
+#include <imgui.h>
 
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
-#include "imgui.h"
+#include <stdexcept>
 
 #include "app.h"
 #include "ui.h"
@@ -25,6 +26,11 @@ App::App(int width, int height, const char* title)
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);  // enable vsync
 
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        throw std::runtime_error("Failed to initialize GLAD");
+    }
+
     InitImGui();
 }
 
@@ -37,13 +43,30 @@ App::~App()
 
 void App::InitImGui()
 {
+    // Create ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    (void)io;
 
+    // Enable docking
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+    // (Optional) Enable multi-viewport if you want windows to detach
+    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+    // Setup style
     ImGui::StyleColorsDark();
 
+    // When using Viewports, tweak style so platform windows match main window
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        ImGuiStyle& style = ImGui::GetStyle();
+        if (style.WindowRounding != 0.0f)
+            style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
+    // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 }
@@ -55,7 +78,7 @@ void App::ShutdownImGui()
     ImGui::DestroyContext();
 }
 
-void App::Run()
+void App::Run(UIState uiState)
 {
     while (!glfwWindowShouldClose(window))
     {
@@ -67,7 +90,7 @@ void App::Run()
         ImGui::NewFrame();
 
         // Call your GUI
-        RenderUI();
+        RenderUI(uiState);
 
         // Render ImGui
         ImGui::Render();

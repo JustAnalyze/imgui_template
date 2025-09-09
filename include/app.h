@@ -2,6 +2,8 @@
 #ifndef APP_H
 #define APP_H
 
+#include "ui.h"
+
 #include <GLFW/glfw3.h>
 
 // The "App" handles window + ImGui lifecycle
@@ -11,7 +13,7 @@ class App
     App(int width, int height, const char* title);
     ~App();
 
-    void Run();  // main loop
+    void Run(UIState uiState);  // main loop
 
  private:
     GLFWwindow* window;
@@ -20,4 +22,4 @@ class App
     void ShutdownImGui();
 };
 
-#endif
+#endif  // APP_H
