@@ -56,16 +56,13 @@ void RenderDebug(DebugState& state)
 
 void RenderImageWindow(ImageWindow& state)
 {
-    if (state.imageTexture == 0)
+    if (!LoadTextureFromFile(state.imagePath.c_str(), &state.imageTexture,
+                             &state.imageWidth, &state.imageHeight))
     {
-        if (!LoadTextureFromFile("Acadian_Flycatcher.jpg", &state.imageTexture,
-                                 &state.imageWidth, &state.imageHeight))
-        {
-            std::cerr << "Failed to load texture!" << std::endl;
-        }
+        std::cerr << "Failed to load texture!" << std::endl;
     }
 
-    ImGui::Begin("Image Example");
+    ImGui::Begin("Image Window");
     if (state.imageTexture)
     {
         ImGui::Image(
