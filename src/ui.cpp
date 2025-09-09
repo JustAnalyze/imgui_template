@@ -79,6 +79,7 @@ void RenderImageViewer(ImageViewer& state)
     ImGui::End();
 }
 
+// Open Directory Dialog using nativefiledialog package
 std::string OpenDirectoryDialog()
 {
     nfdchar_t* outPath = nullptr;
