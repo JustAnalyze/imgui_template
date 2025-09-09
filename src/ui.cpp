@@ -144,9 +144,8 @@ void RenderUI(UIState& uiState)
     RenderDockspace(uiState);
 
     // Render windows based on state
-    RenderImageBrowser();
-    RenderImageWindow(uiState.imageLoader);
-    RenderFileDialog(uiState.fileDialog);
+    RenderImageBrowser(uiState.imageBrowser, uiState.imageWindow);
+    RenderImageWindow(uiState.imageWindow);
     RenderSettings(uiState.settings);
     RenderDebug(uiState.debug);
 }
