@@ -9,6 +9,7 @@
 struct ImageWindow
 {
     GLuint imageTexture = 0;
+    std::string imagePath = "";
     int imageWidth = 0;
     int imageHeight = 0;
 };
