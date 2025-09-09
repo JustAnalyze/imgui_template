@@ -49,7 +49,8 @@ struct UIState
     FileDialogState fileDialog;
     SettingsState settings;
     DebugState debug;
-    ImageWindow imageLoader;
+    ImageWindow imageWindow;
+    ImageBrowser imageBrowser;
 };
 
 // --- Rendering functions ---
