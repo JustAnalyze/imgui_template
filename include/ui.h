@@ -11,6 +11,7 @@ struct ImageBrowser
 {
     bool showWindow = true;
     std::vector<std::string> imagePaths{};
+    int selectedIndex = -1;
 };
 
 struct ImageViewer

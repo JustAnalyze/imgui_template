@@ -144,12 +144,21 @@ void RenderImageBrowser(ImageBrowser& ImageBrowserState,
                         ImageViewer& imageWindowState)
 {
     ImGui::Begin("Image Browser", &ImageBrowserState.showWindow);
-    for (const std::string& filePath : ImageBrowserState.imagePaths)
+
+    for (size_t i = 0; i < ImageBrowserState.imagePaths.size(); ++i)
     {
+        const std::string& filePath = ImageBrowserState.imagePaths[i];
         std::filesystem::path filePath_fsp(filePath);
-        if (ImGui::Selectable(filePath_fsp.filename().c_str()))
+
+        // If the current idx is same as the previously
+        // selected idx highlight the selectable
+        bool selectedIdxIsSameAsCurrentIdx{ ImageBrowserState.selectedIndex
+                                            == static_cast<int>(i) };
+        if (ImGui::Selectable(filePath_fsp.filename().c_str(),
+                              selectedIdxIsSameAsCurrentIdx))
         {
-            std::cout << "Selected: " << filePath << '\n';
+            ImageBrowserState.selectedIndex = i;
+            std::cout << "Selected index: " << i << " -> " << filePath << '\n';
             imageWindowState.imagePath = filePath;
         }
     }
