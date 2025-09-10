@@ -7,6 +7,8 @@
 #include <vector>
 #include <filesystem>
 
+#include "ui_state.h"
+
 void DoSomething();
 
 void SaveFile(const char* path);
@@ -15,7 +17,6 @@ std::vector<std::string> getDirFilePaths(std::filesystem::path dirPath);
 
 std::string OpenDirectoryDialog();
 
-void getSegments(std::vector<std::string>& allFramesPaths,
-                 std::vector<std::vector<std::string>>& allSegments,
-                 int& segmentSize);
+void getSegments(SegmentWindow& segmentWindow);
+//
 #endif

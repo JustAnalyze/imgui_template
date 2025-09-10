@@ -3,7 +3,6 @@
 #include <nfd.h>
 
 #include <iostream>
-#include <filesystem>
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -76,23 +75,21 @@ void sortFilePaths(std::vector<std::string>& paths)
 
 // Groups frame paths in to segments depending on segmentSize and stores it in
 // the SegmentWindowState.currentSegmentFrames
-void getSegments(std::vector<std::string>& allFramesPaths,
-                 std::vector<std::vector<std::string>>& allSegments,
-                 int& segmentSize)  // allow flexible size
+void getSegments(SegmentWindow& segmentWindow)  // allow flexible size
 {
-    sortFilePaths(allFramesPaths);
+    sortFilePaths(segmentWindow.allFramesPaths);
 
     std::vector<std::string> segment;
-    segment.reserve(segmentSize);  // avoid reallocations
+    segment.reserve(segmentWindow.segmentSize);  // avoid reallocations
 
-    for (size_t i = 0; i < allFramesPaths.size(); ++i)
+    for (size_t i = 0; i < segmentWindow.allFramesPaths.size(); ++i)
     {
-        segment.push_back(allFramesPaths[i]);
+        segment.push_back(segmentWindow.allFramesPaths[i]);
 
-        bool segmentSizeMet{ (i + 1) % segmentSize == 0 };
+        bool segmentSizeMet{ (i + 1) % segmentWindow.segmentSize == 0 };
         if (segmentSizeMet)
         {
-            allSegments.push_back(segment);
+            segmentWindow.allSegments.push_back(segment);
             segment.clear();
         }
     }
@@ -100,7 +97,7 @@ void getSegments(std::vector<std::string>& allFramesPaths,
     // push remaining frames if not empty
     if (!segment.empty())
     {
-        allSegments.push_back(segment);
+        segmentWindow.allSegments.push_back(segment);
     }
 }
 

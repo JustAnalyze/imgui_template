@@ -73,9 +73,7 @@ void RenderMainMenu(UIState& uiState)
             {
                 uiState.fileDialog.selectedPath = dir;
                 uiState.segmentWindow.allFramesPaths = getDirFilePaths(dir);
-                getSegments(uiState.segmentWindow.allFramesPaths,
-                            uiState.segmentWindow.allSegments,
-                            uiState.segmentWindow.segmentSize);
+                getSegments(uiState.segmentWindow);
             }
         }
         ImGui::EndMenu();
