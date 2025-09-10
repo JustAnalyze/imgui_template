@@ -1,5 +1,7 @@
 // Copyright 2025 Justin Nacu
 // logic.cpp
+#include <nfd.h>
+
 #include <iostream>
 #include <filesystem>
 #include <string>
@@ -27,6 +29,29 @@ std::vector<std::string> getDirFilePaths(std::filesystem::path dirPath)
     }
 
     return imgPaths;
+}
+
+// Open Directory Dialog using nativefiledialog package
+std::string OpenDirectoryDialog()
+{
+    nfdchar_t* outPath = nullptr;
+    nfdresult_t result = NFD_PickFolder(NULL, &outPath);
+
+    if (result == NFD_OKAY)
+    {
+        std::string selectedPath(outPath);
+        free(outPath);  // cleanup required
+        return selectedPath;
+    }
+    else if (result == NFD_CANCEL)
+    {
+        return "";  // user cancelled
+    }
+    else
+    {
+        std::cerr << "NFD Error: " << NFD_GetError() << std::endl;
+    }
+    return "";
 }
 
 void DoSomething() { std::cout << "Action triggered!\n"; }

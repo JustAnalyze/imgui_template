@@ -10,5 +10,6 @@
 void DoSomething();
 void SaveFile(const char* path);
 std::vector<std::string> getDirFilePaths(std::filesystem::path dirPath);
+std::string OpenDirectoryDialog();
 
 #endif

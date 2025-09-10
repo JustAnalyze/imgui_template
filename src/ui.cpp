@@ -1,7 +1,6 @@
 // Copyright 2025 Justin Nacu
 // ui.cpp
 #include <imgui.h>
-#include <nfd.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -77,25 +76,6 @@ void RenderImageViewer(ImageViewer& state)
             ImVec2(state.imageWidth, state.imageHeight));
     }
     ImGui::End();
-}
-
-// Open Directory Dialog using nativefiledialog package
-std::string OpenDirectoryDialog()
-{
-    nfdchar_t* outPath = nullptr;
-    nfdresult_t result = NFD_PickFolder(NULL, &outPath);
-
-    if (result == NFD_OKAY)
-    {
-        std::string selectedPath(outPath);
-        free(outPath);  // cleanup required
-        return selectedPath;
-    }
-    else if (result == NFD_CANCEL)
-        return "";  // user cancelled
-    else
-        std::cerr << "NFD Error: " << NFD_GetError() << std::endl;
-    return "";
 }
 
 // Child of Dockspace
