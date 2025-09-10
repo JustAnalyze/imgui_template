@@ -17,6 +17,8 @@ std::vector<std::string> getDirFilePaths(std::filesystem::path dirPath);
 
 std::string OpenDirectoryDialog();
 
+void HandleOpenDirectory(UIState& uiState, const std::string& dir);
+
 void getSegments(SegmentWindow& segmentWindow);
 //
 #endif

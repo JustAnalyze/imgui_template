@@ -54,6 +54,13 @@ std::string OpenDirectoryDialog()
     return "";
 }
 
+void HandleOpenDirectory(UIState& uiState, const std::string& dir)
+{
+    uiState.fileDialog.selectedPath = dir;
+    uiState.segmentWindow.allFramesPaths = getDirFilePaths(dir);
+    getSegments(uiState.segmentWindow);
+}
+
 int extractFrameNumber(const std::string& filename)
 {
     auto pos = filename.find_last_of('_');

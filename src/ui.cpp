@@ -48,8 +48,6 @@ void RenderImageViewer(ImageViewer& state)
     if (state.imagePath.empty())
         return;  // nothing to show
 
-    UpdateImageViewerTexture(state);
-
     ImGui::Begin("Image Window");
     if (state.imageTexture)
     {
@@ -60,32 +58,39 @@ void RenderImageViewer(ImageViewer& state)
     ImGui::End();
 }
 
-// Child of Dockspace
+// MAIN MENU CODE STARTS HERE (MAIN MENU IS USED IN INSIDE RenderDockspace)
+static void RenderFileMenu(UIState& uiState)
+{
+    if (ImGui::MenuItem("Open Directory"))
+    {
+        if (auto dir = OpenDirectoryDialog(); !dir.empty())
+            HandleOpenDirectory(uiState, dir);
+    }
+}
+
+static void RenderViewMenu(UIState& uiState)
+{
+    ImGui::MenuItem("Settings", nullptr, &uiState.settings.showWindow);
+    ImGui::MenuItem("Profiler", nullptr, &uiState.debug.showProfiler);
+    ImGui::MenuItem("Logs", nullptr, &uiState.debug.showLogs);
+}
+
 void RenderMainMenu(UIState& uiState)
 {
-    ImGui::BeginMainMenuBar();
-    if (ImGui::BeginMenu("File"))
+    if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::MenuItem("Open Directory"))
+        if (ImGui::BeginMenu("File"))
         {
-            std::string dir = OpenDirectoryDialog();
-            if (!dir.empty())
-            {
-                uiState.fileDialog.selectedPath = dir;
-                uiState.segmentWindow.allFramesPaths = getDirFilePaths(dir);
-                getSegments(uiState.segmentWindow);
-            }
+            RenderFileMenu(uiState);
+            ImGui::EndMenu();
         }
-        ImGui::EndMenu();
+        if (ImGui::BeginMenu("View"))
+        {
+            RenderViewMenu(uiState);
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
     }
-    if (ImGui::BeginMenu("View"))
-    {
-        ImGui::MenuItem("Settings", nullptr, &uiState.settings.showWindow);
-        ImGui::MenuItem("Profiler", nullptr, &uiState.debug.showProfiler);
-        ImGui::MenuItem("Logs", nullptr, &uiState.debug.showLogs);
-        ImGui::EndMenu();
-    }
-    ImGui::EndMainMenuBar();
 }
 
 void RenderDockspace(UIState& uiState)
@@ -164,6 +169,9 @@ void RenderSegmentWindow(SegmentWindow& SegmentWindowState,
 void RenderUI(UIState& uiState)
 {
     RenderDockspace(uiState);
+
+    // Update logic/state before drawing
+    UpdateImageViewerTexture(uiState.imageViewer);
 
     // Render windows based on state
     RenderSegmentWindow(uiState.segmentWindow, uiState.imageViewer);
