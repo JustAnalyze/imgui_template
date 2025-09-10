@@ -1,10 +1,10 @@
 // Copyright 2025 Justin Nacu
-#ifndef APP_H
-#define APP_H
+#ifndef IMNOTATOR_APP_H
+#define IMNOTATOR_APP_H
 
-#include "ui.h"
 
 #include <GLFW/glfw3.h>
+#include "ui_state.h"
 
 // The "App" handles window + ImGui lifecycle
 class App

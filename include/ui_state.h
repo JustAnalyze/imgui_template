@@ -2,10 +2,10 @@
 #ifndef IMNOTATOR_UI_STATE_H
 #define IMNOTATOR_UI_STATE_H
 
-#include <glad/glad.h>
-#include <iostream>
 #include <string>
 #include <vector>
+
+using GLuint = unsigned int;
 
 // Example usage inside your render loop
 struct SegmentWindow

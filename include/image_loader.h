@@ -1,9 +1,14 @@
 // Copyright 2025 Justin Nacu
-#ifndef IMAGE_LOADER_H
-#define IMAGE_LOADER_H
+#ifndef IMNOTATOR_IMAGE_LOADER_H
+#define IMNOTATOR_IMAGE_LOADER_H
 
-#include <glad/glad.h>
-#include <opencv2/opencv.hpp>
+using GLuint = unsigned int;
+
+// Forward declaration for opencv Mat
+namespace cv
+{
+class Mat;
+}
 
 // Load image with OpenCV and upload as OpenGL texture
 bool LoadTexdureFromCVMat(const cv::Mat& mat, GLuint* out_texture,

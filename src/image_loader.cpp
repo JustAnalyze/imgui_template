@@ -1,4 +1,8 @@
 // Copyright 2025 Justin Nacu
+#include <glad/glad.h>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 
 #include "image_loader.h"
 
