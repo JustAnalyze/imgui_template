@@ -48,8 +48,8 @@ target_sources(
   imnotator PRIVATE external/imgui/backends/imgui_impl_glfw.cpp
                     external/imgui/backends/imgui_impl_opengl3.cpp)
 
-# nativiefiledialog
-add_subdirectory(external/nativefiledialog)
+# nativiefiledialog (Patch)
+add_subdirectory(cmake/patches/nativefiledialog)
 target_link_libraries(imnotator PRIVATE nativefiledialog)
 
 # Add glad as a library
