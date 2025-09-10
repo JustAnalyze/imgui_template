@@ -4,6 +4,8 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 
+#include <iostream>
+
 #include "image_loader.h"
 
 bool LoadTextureFromCVMat(const cv::Mat& mat, GLuint* out_texture,
@@ -73,4 +75,34 @@ bool LoadTextureFromFile(const char* file_name, GLuint* out_texture,
         return false;
 
     return LoadTextureFromCVMat(mat, out_texture, out_width, out_height);
+}
+
+//
+// Updates the texture if a new image was selected
+void UpdateImageViewerTexture(ImageViewer& state)
+{
+    if (state.imagePath.empty())
+        return;
+
+    if (state.imagePath != state.loadedImagePath)
+    {
+        // Free old texture
+        if (state.imageTexture)
+        {
+            glDeleteTextures(1, &state.imageTexture);
+            state.imageTexture = 0;
+        }
+
+        // Try load new texture
+        if (LoadTextureFromFile(state.imagePath.c_str(), &state.imageTexture,
+                                &state.imageWidth, &state.imageHeight))
+        {
+            state.loadedImagePath = state.imagePath;
+        }
+        else
+        {
+            std::cerr << "Failed to load texture: " << state.imagePath << '\n';
+            state.loadedImagePath.clear();
+        }
+    }
 }

@@ -1,5 +1,7 @@
 // Copyright 2025 Justin Nacu
 // ui.cpp
+#include <glad/glad.h>
+
 #include <imgui.h>
 #include <iostream>
 #include <string>
@@ -46,28 +48,7 @@ void RenderImageViewer(ImageViewer& state)
     if (state.imagePath.empty())
         return;  // nothing to show
 
-    // Load texture only if a new image was selected
-    if (state.imagePath != state.loadedImagePath)
-    {
-        // free old texture if it exists
-        if (state.imageTexture)
-        {
-            glDeleteTextures(1, &state.imageTexture);
-            state.imageTexture = 0;
-        }
-        // try to load new texture
-        if (LoadTextureFromFile(state.imagePath.c_str(), &state.imageTexture,
-                                &state.imageWidth, &state.imageHeight))
-        {
-            state.loadedImagePath = state.imagePath;  // mark as loaded
-        }
-        else
-        {
-            std::cerr << "Failed to load texture: " << state.imagePath
-                      << std::endl;
-            state.loadedImagePath.clear();
-        }
-    }
+    UpdateImageViewerTexture(state);
 
     ImGui::Begin("Image Window");
     if (state.imageTexture)

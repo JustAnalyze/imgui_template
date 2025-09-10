@@ -2,6 +2,8 @@
 #ifndef IMNOTATOR_IMAGE_LOADER_H
 #define IMNOTATOR_IMAGE_LOADER_H
 
+#include "ui_state.h"
+
 using GLuint = unsigned int;
 
 // Forward declaration for opencv Mat
@@ -17,5 +19,7 @@ bool LoadTexdureFromCVMat(const cv::Mat& mat, GLuint* out_texture,
 // Convenience wrapper: load from file using OpenCV imread
 bool LoadTextureFromFile(const char* file_name, GLuint* out_texture,
                          int* out_width, int* out_height);
+
+void UpdateImageViewerTexture(ImageViewer& state);
 
 #endif  // IMAGE_LOADER_H
