@@ -7,11 +7,14 @@
 #include <vector>
 
 // Example usage inside your render loop
-struct ImageBrowser
+struct SegmentWindow
 {
     bool showWindow = true;
-    std::vector<std::string> imagePaths{};
-    int selectedIndex = -1;
+    int segmentSize = 10;
+    std::vector<std::string> allFramesPaths{};
+    std::vector<std::string> currentSegmentFrames{};
+    std::vector<std::vector<std::string>> allSegments{};
+    int selectedSegmentIdx = -1;
 };
 
 struct ImageViewer
@@ -49,7 +52,7 @@ struct UIState
     SettingsState settings;
     DebugState debug;
     ImageViewer imageViewer;
-    ImageBrowser imageBrowser;
+    SegmentWindow segmentWindow;
 };
 
 // --- Rendering functions ---

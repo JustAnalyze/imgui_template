@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "ui.h"
@@ -90,7 +91,10 @@ void RenderMainMenu(UIState& uiState)
             if (!dir.empty())
             {
                 uiState.fileDialog.selectedPath = dir;
-                uiState.imageBrowser.imagePaths = getDirFilePaths(dir);
+                uiState.segmentWindow.allFramesPaths = getDirFilePaths(dir);
+                getSegments(uiState.segmentWindow.allFramesPaths,
+                            uiState.segmentWindow.allSegments,
+                            uiState.segmentWindow.segmentSize);
             }
         }
         ImGui::EndMenu();
@@ -140,26 +144,39 @@ void RenderDockspace(UIState& uiState)
     ImGui::End();
 }
 
-void RenderImageBrowser(ImageBrowser& ImageBrowserState,
-                        ImageViewer& imageWindowState)
+void RenderSegmentWindow(SegmentWindow& SegmentWindowState,
+                         ImageViewer& imageWindowState)
 {
-    ImGui::Begin("Image Browser", &ImageBrowserState.showWindow);
+    ImGui::Begin("Segment Window", &SegmentWindowState.showWindow);
 
-    for (size_t i = 0; i < ImageBrowserState.imagePaths.size(); ++i)
+    for (size_t i = 0; i < SegmentWindowState.allSegments.size(); ++i)
     {
-        const std::string& filePath = ImageBrowserState.imagePaths[i];
-        std::filesystem::path filePath_fsp(filePath);
+        const std::string segmentName = "segment" + std::to_string(i);
 
-        // If the current idx is same as the previously
+        // If the current idx is same as the previous
         // selected idx highlight the selectable
-        bool selectedIdxIsSameAsCurrentIdx{ ImageBrowserState.selectedIndex
-                                            == static_cast<int>(i) };
-        if (ImGui::Selectable(filePath_fsp.filename().c_str(),
+        bool selectedIdxIsSameAsCurrentIdx{
+            SegmentWindowState.selectedSegmentIdx == static_cast<int>(i)
+        };
+        if (ImGui::Selectable(segmentName.c_str(),
                               selectedIdxIsSameAsCurrentIdx))
         {
-            ImageBrowserState.selectedIndex = i;
-            std::cout << "Selected index: " << i << " -> " << filePath << '\n';
-            imageWindowState.imagePath = filePath;
+            SegmentWindowState.selectedSegmentIdx = i;
+
+            SegmentWindowState.currentSegmentFrames
+                = SegmentWindowState.allSegments[i];
+
+            std::cout << "Selected index: " << i << " -> " << segmentName
+                      << '\n'
+                      << "frames: \n";
+
+            for (std::string_view frame :
+                 SegmentWindowState.currentSegmentFrames)
+            {
+                std::cout << frame << '\n';
+            }
+            // TODO: Rename imageWindowState to displayWindowState and find a
+            // way to display frames in loop
         }
     }
     ImGui::End();
@@ -170,7 +187,7 @@ void RenderUI(UIState& uiState)
     RenderDockspace(uiState);
 
     // Render windows based on state
-    RenderImageBrowser(uiState.imageBrowser, uiState.imageViewer);
+    RenderSegmentWindow(uiState.segmentWindow, uiState.imageViewer);
     RenderImageViewer(uiState.imageViewer);
     RenderSettings(uiState.settings);
     RenderDebug(uiState.debug);

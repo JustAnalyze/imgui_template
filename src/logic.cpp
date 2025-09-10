@@ -4,7 +4,9 @@
 
 #include <iostream>
 #include <filesystem>
+#include <algorithm>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "logic.h"
@@ -52,6 +54,55 @@ std::string OpenDirectoryDialog()
         std::cerr << "NFD Error: " << NFD_GetError() << std::endl;
     }
     return "";
+}
+
+int extractFrameNumber(const std::string& filename)
+{
+    auto pos = filename.find_last_of('_');
+    if (pos == std::string::npos)
+        return -1;
+
+    auto dot = filename.find_last_of('.');
+    std::string numStr = filename.substr(pos + 1, dot - pos - 1);
+
+    return std::stoi(numStr);
+}
+
+void sortFilePaths(std::vector<std::string>& paths)
+{
+    std::sort(paths.begin(), paths.end(),
+              [](const std::string& a, const std::string& b)
+              { return extractFrameNumber(a) < extractFrameNumber(b); });
+}
+
+// Groups frame paths in to segments depending on segmentSize and stores it in
+// the SegmentWindowState.currentSegmentFrames
+void getSegments(std::vector<std::string>& allFramesPaths,
+                 std::vector<std::vector<std::string>>& allSegments,
+                 int& segmentSize)  // allow flexible size
+{
+    sortFilePaths(allFramesPaths);
+
+    std::vector<std::string> segment;
+    segment.reserve(segmentSize);  // avoid reallocations
+
+    for (size_t i = 0; i < allFramesPaths.size(); ++i)
+    {
+        segment.push_back(allFramesPaths[i]);
+
+        bool segmentSizeMet{ (i + 1) % segmentSize == 0 };
+        if (segmentSizeMet)
+        {
+            allSegments.push_back(segment);
+            segment.clear();
+        }
+    }
+
+    // push remaining frames if not empty
+    if (!segment.empty())
+    {
+        allSegments.push_back(segment);
+    }
 }
 
 void DoSomething() { std::cout << "Action triggered!\n"; }
